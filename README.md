@@ -1,4 +1,4 @@
-# Kibana Docker Container
+# FluentD Azure Docker Container
 ###### Customized Docker Container containing Kibana for use in Azure
 
 EDIT_AND_RUNME.sh is a bash script that passes all arguments to docker-compose. Used to load variables and setup things
