@@ -1,0 +1,99 @@
+version: '2'
+services:
+
+  # FluentD Receiver Beats
+  fluentd-beats:
+    build: ./build/fluentd
+    restart: always
+    depends_on:
+      - elasticsearch-master
+    logging:
+      driver: fluentd
+      options:
+        fluentd-address: "localhost:24224"
+        tag: "docker.fluentd-beats"
+        fluentd-async-connect: "true"
+    ports:
+      - 5044:5044
+    environment:
+      FLUENTD_CONF: "fluentd-beats.conf"
+      FLUENTD_OPT: "-vv"
+      ES_SERVER: elasticsearch-master # Server to connect to and load ES Templates
+      ES_USER: "elastic" # Username used to connect to ES to load Templates
+      ES_PASSWORD: "changeme" # Password used to connect to ES to load Templates
+    volumes:
+      #- ../docker-data/docker-elk/fluentd-receiver/config:/fluentd/etc
+      - ../docker-data/docker-elk/fluentd-receiver/data:/data_log
+    cap_add:
+      - NET_BIND_SERVICE
+    links:
+      - elasticsearch-master:elasticsearch-master
+      - elasticsearch-slave:elasticsearch-slave
+    networks:
+      - main
+
+  # FluentD Receiver Syslog
+  fluentd-syslog:
+    build: ./build/fluentd
+    restart: always
+    depends_on:
+      - elasticsearch-master
+    logging:
+      driver: fluentd
+      options:
+        fluentd-address: "localhost:24224"
+        tag: "docker.fluentd-syslog"
+        fluentd-async-connect: "true"
+    ports:
+      - 514:514
+      - 514:514/udp
+    environment:
+      FLUENTD_CONF: "fluentd-syslog.conf"
+      FLUENTD_OPT: "-vv"
+      ES_SERVER: 192.168.20.10 # Server to connect to and load ES Templates
+      ES_USER: "elastic" # Username used to connect to ES to load Templates
+      ES_PASSWORD: "changeme" # Password used to connect to ES to load Templates
+    volumes:
+      #- ../docker-data/docker-elk/fluentd-receiver/config:/fluentd/etc
+      - ../docker-data/docker-elk/fluentd-receiver/data:/data_log
+    cap_add:
+      - NET_BIND_SERVICE
+    links:
+      - elasticsearch-master:elasticsearch-master
+      - elasticsearch-slave:elasticsearch-slave
+    networks:
+      - main
+
+  # FluentD Receiver Docker
+  fluentd-docker:
+    build: ./build/fluentd
+    restart: always
+    depends_on:
+      - elasticsearch-master
+    logging:
+      driver: fluentd
+      options:
+        fluentd-address: "localhost:24224"
+        tag: "docker.fluentd-docker"
+        fluentd-async-connect: "true"
+    ports:
+      - 24224:24224
+    environment:
+      FLUENTD_CONF: "fluentd-docker.conf"
+      FLUENTD_OPT: "-vv"
+      ES_SERVER: elasticsearch-master # Server to connect to and load ES Templates
+      ES_USER: "elastic" # Username used to connect to ES to load Templates
+      ES_PASSWORD: "changeme" # Password used to connect to ES to load Templates
+    volumes:
+      #- ../docker-data/docker-elk/fluentd-receiver/config:/fluentd/etc
+      - ../docker-data/docker-elk/fluentd-receiver/data:/data_log
+    cap_add:
+      - NET_BIND_SERVICE
+    links:
+      - elasticsearch-master:elasticsearch-master
+      - elasticsearch-slave:elasticsearch-slave
+    networks:
+      - main
+
+networks:
+  main:

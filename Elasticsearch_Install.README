@@ -1,0 +1,114 @@
+# Create 5 VM's and make not of their name
+
+apt-get update && apt-get -y upgrade && apt-get -y dist-upgrade
+echo "oracle-java8-installer shared/accepted-oracle-license-v1-1 select true" | debconf-set-selections
+echo "oracle-java8-installer shared/accepted-oracle-license-v1-1 seen true" | debconf-set-selections
+add-apt-repository -y ppa:webupd8team/java && apt-get update && apt-get -y install oracle-java8-installer
+wget -qO - https://packages.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
+echo "deb https://packages.elastic.co/elasticsearch/2.x/debian stable main" | sudo tee -a /etc/apt/sources.list.d/elasticsearch-2.x.list
+sudo apt-get update && sudo apt-get -y install elasticsearch
+systemctl enable elasticsearch
+
+# Create Storage Disk and Mount it in Ubuntu
+fdisk /dev/sdc
+#n, enter, enter enter, w
+#blkid
+# Grab UUID of /dev/sdc1
+cat <<EOT>> /etc/fstab
+`blkid | grep -i /dev/sdc1 | awk '{print $2}' | sed 's/"//g'`      /opt     ext4   defaults,discard        0 0
+EOT
+
+mount -a
+mkdir -p /opt/es_data
+mkdir -p /opt/es_logs
+chown -R elasticsearch.elasticsearch /opt/es_data
+chown -R elasticsearch.elasticsearch /opt/es_logs/
+
+## VM4 Cluster Master
+cat <<"EOT">> /etc/elasticsearch/elasticsearch.yml
+cluster.name: NET-MAIN-CLUSTER
+node.name: net-main-cluster-master1
+node.master: true
+node.data: false
+network.host: 0.0.0.0
+discovery.zen.ping.multicast.enabled: false
+discovery.zen.ping.unicast.hosts: ["CLUSTER-NODE-1", "CLUSTER-NODE-2", "CLUSTER-NODE-3", "CLUSTER-NODE-4" ]
+path.data:  /opt/es_data
+path.logs:  /opt/es_logs
+EOT
+
+## VM1 Cluster Node 1
+cat <<"EOT">> /etc/elasticsearch/elasticsearch.yml
+cluster.name: NET-MAIN-CLUSTER
+node.name: net-main-cluster-node1
+node.client: false
+node.data: true
+network.host: 0.0.0.0
+discovery.zen.ping.multicast.enabled: false
+discovery.zen.ping.unicast.hosts: ["ES-NET-MAINCLUSTER-1", "ES-NET-MAINCLUSTER-2", "ES-NET-MAINCLUSTER-3", "ES-NET-MAINCLUSTER-4" ]
+path.data: /opt/es_data
+path.logs: /opt/es_logs
+EOT
+
+## VM2 Cluster Node 2
+cat <<"EOT">> /etc/elasticsearch/elasticsearch.yml
+cluster.name: NET-MAIN-CLUSTER
+node.name: net-main-cluster-node2
+node.client: false
+node.data: true
+network.host: 0.0.0.0
+discovery.zen.ping.multicast.enabled: false
+discovery.zen.ping.unicast.hosts: ["CLUSTER-NODE-1", "CLUSTER-NODE-2", "CLUSTER-NODE-3", "CLUSTER-NODE-4" ]
+path.data: /opt/es_data
+path.logs: /opt/es_logs
+EOT
+
+## VM3 Cluster Node 3
+cat <<"EOT">> /etc/elasticsearch/elasticsearch.yml
+cluster.name: NET-MAIN-CLUSTER
+node.name: net-main-cluster-node3
+node.client: false
+node.data: true
+network.host: 0.0.0.0
+discovery.zen.ping.multicast.enabled: false
+discovery.zen.ping.unicast.hosts: ["CLUSTER-NODE-1", "CLUSTER-NODE-2", "CLUSTER-NODE-3", "CLUSTER-NODE-4" ]
+path.data: /opt/es_data
+path.logs: /opt/es_logs
+EOT
+
+## VM4 Cluster Client
+cat <<"EOT">> /etc/elasticsearch/elasticsearch.yml
+cluster.name: NET-MAIN-CLUSTER
+node.name: net-main-cluster-client1
+node.master:
+node.data: false
+network.host: 0.0.0.0
+discovery.zen.ping.multicast.enabled: false
+discovery.zen.ping.unicast.hosts: ["CLUSTER-NODE-1", "CLUSTER-NODE-2", "CLUSTER-NODE-3", "CLUSTER-NODE-4" ]
+path.data:  /opt/es_data
+path.logs:  /opt/es_logs
+EOT
+
+## Install on VM4 Cluster Client
+/usr/share/elasticsearch/bin/plugin install mobz/elasticsearch-head
+
+## Complete the Following on all VM's
+cat <<"EOT">> /etc/security/limits.conf
+*        soft   nofile   64000
+*        hard   nofile   64000
+root     soft   nofile   64000
+root     hard   nofile   64000
+EOT
+
+cat <<"EOT">> /etc/pam.d/common-session
+session required                        pam_limits.so
+EOT
+
+cat <<"EOT">> /etc/pam.d/common-session-noninteractive
+session required                        pam_limits.so
+EOT
+
+# Set HEAP Size to half of RAM
+cat <<EOT>> /etc/environment
+ES_HEAP_SIZE="`free | grep -i "Mem" | awk '{ printf "%.0f", ($2 / 2) / 1000000}'`M"
+EOT
