@@ -1,5 +1,5 @@
 {
-	"template": "dns-*",
+	"template": "dhcp-*",
 	"settings": {
 		"index.refresh_interval": "60s"
 	},
@@ -29,25 +29,31 @@
 					"type": "date",
 					"format": "strict_date_optional_time||epoch_millis"
 				},
-				"DateTime": {
+				"Date": {
 					"type": "date",
-					"format": "MM/dd/yyyy HH:mm:ss a"
+					"format": "MM/dd/yyyy"
 				},
 				"EventReceivedTime": {
 					"type": "date",
 					"format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd HH:mm:ss Z"
 				},
-				"QuestionName": {
-					"type": "string",
-					"fields": {
-						"raw": {
-							"type": "string",
-							"index": "not_analyzed"
-						}
-					}
-				},
-				"RemoteIP": {
+				"Description": {
+                                        "type": "string",
+                                        "index" : "analyzed"
+                                },
+				"IDdef": {
+                                        "type": "string"
+                                },
+				"Message": {
+                                        "type": "string",
+                                        "index" : "analyzed"
+                                },
+				"IPAddress": {
 					"type": "ip"
+				},
+				"Time": {
+					"type": "date",
+					"format": "HH:mm:ss"
 				},
 				"syslog_server_received_time": {
 					"type": "date",
