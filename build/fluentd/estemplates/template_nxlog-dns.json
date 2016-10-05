@@ -1,0 +1,127 @@
+{
+	"template": "dns-*",
+	"settings": {
+		"index.refresh_interval": "60s"
+	},
+	"mappings": {
+		"_default_": {
+			"_all": {
+				"enabled": false
+			},
+			"dynamic_templates" : [{
+        	      		"message_field" : {
+                			"match" : "message",
+                			"match_mapping_type" : "string",
+                			"mapping" : { "type" : "string", "index" : "not_analyzed" }
+	              		}
+        	    	},
+			{
+              			"string_fields" : {
+                			"match" : "*",
+                			"match_mapping_type" : "string",
+	                		"mapping" : { "type" : "string", "index" : "not_analyzed" }
+        	      		}
+            		}]
+		},
+		"fluentd": {
+			"properties": {
+				"@timestamp": {
+					"type": "date",
+					"format": "strict_date_optional_time||epoch_millis"
+				},
+				"Context": {
+					"type": "string",
+					"index": "not_analyzed"
+				},
+				"DateTime": {
+					"type": "date",
+					"format": "MM/dd/yyyy HH:mm:ss a"
+				},
+				"EventReceivedTime": {
+					"type": "date",
+					"format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd HH:mm:ss Z"
+				},
+				"FlagsCharCodes": {
+					"type": "string",
+					"index": "not_analyzed"
+				},
+				"FlagsHex": {
+					"type": "string",
+					"index": "not_analyzed"
+				},
+				"InternalPacketIdentifier": {
+					"type": "string",
+					"index": "not_analyzed"
+				},
+				"Message": {
+					"type": "string",
+					"index": "not_analyzed"
+				},
+				"NXLogFileType": {
+					"type": "string",
+					"index": "not_analyzed"
+				},
+				"NXLogHost": {
+					"type": "string",
+					"index": "not_analyzed"
+				},
+				"Opcode": {
+					"type": "string",
+					"index": "not_analyzed"
+				},
+				"QueryResponse": {
+					"type": "string",
+					"index": "not_analyzed"
+				},
+				"QuestionName": {
+					"type": "string",
+					"fields": {
+						"raw": {
+							"type": "string",
+							"index": "not_analyzed"
+						}
+					}
+				},
+				"QuestionType": {
+					"type": "string",
+					"index": "not_analyzed"
+				},
+				"RemoteIP": {
+					"type": "ip"
+				},
+				"ResponseCode": {
+					"type": "string",
+					"index": "not_analyzed"
+				},
+				"SendReceiveIndicator": {
+					"type": "string",
+					"index": "not_analyzed"
+				},
+				"SourceModuleName": {
+					"type": "string",
+					"index": "not_analyzed"
+				},
+				"SourceModuleType": {
+					"type": "string",
+					"index": "not_analyzed"
+				},
+				"ThreadID": {
+					"type": "string",
+					"index": "not_analyzed"
+				},
+				"UDPTCPIndicator": {
+					"type": "string",
+					"index": "not_analyzed"
+				},
+				"XIDHex": {
+					"type": "string",
+					"index": "not_analyzed"
+				},
+				"syslog_server_received_time": {
+					"type": "date",
+					"format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd HH:mm:ss Z"
+				}
+			}
+		}
+	}
+}
