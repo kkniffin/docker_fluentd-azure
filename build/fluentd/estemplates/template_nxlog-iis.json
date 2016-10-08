@@ -1,0 +1,92 @@
+{
+	"template": "iis-*",
+	"settings": {
+		"index.refresh_interval": "60s"
+	},
+	"mappings": {
+		"_default_": {
+			"_all": {
+				"enabled": false
+			},
+			"dynamic_templates" : [{
+        	      		"message_field" : {
+                			"match" : "message",
+                			"match_mapping_type" : "string",
+                			"mapping" : { "type" : "string", "index" : "not_analyzed" }
+	              		}
+        	    	},
+			{
+              			"string_fields" : {
+                			"match" : "*",
+                			"match_mapping_type" : "string",
+	                		"mapping" : { "type" : "string", "index" : "not_analyzed" }
+        	      		}
+            		}]
+		},
+		"fluentd": {
+			"_all": {
+        			"enabled": true
+      			},
+			"properties": {
+				"@timestamp" : {
+            				"type" : "date",
+            				"format" : "strict_date_optional_time||epoch_millis"
+          			},
+                                "S-IP": {
+                                        "type": "ip"
+                                },
+                                "C-IP": {
+                                        "type": "ip"
+                                },
+                                "S-Port": {
+                                        "type": "integer",
+					"ignore_malformed": true
+                                },
+                                "Sc-Bytes": {
+                                        "type": "integer",
+                                        "ignore_malformed": true
+                                },
+                                "Cs-Bytes": {
+                                        "type": "integer",
+                                        "ignore_malformed": true
+                                },
+				"Time-Taken": {
+                                        "type": "float",
+                                        "ignore_malformed": true
+                                },
+                                "LogDate": {
+                                        "type": "string"
+                                },
+                                "LogTime": {
+                                        "type": "string"
+                                },
+				"LogDateTime": {
+                                        "type": "date",
+					"ignore_malformed": true
+                                },
+                                "Message": {
+                                        "type": "string",
+                                        "index" : "analyzed"
+                                },
+				"NXLogReceivedTime": {
+                                        "type": "date",
+                                        "format" : "epoch_millis"
+                                },
+                                "NXLogHost": {
+                                        "type": "string",
+					"fields": {
+                                                "not_analyzed": {
+                                                        "type": "string",
+                                                        "index": "not_analyzed"
+                                                }
+                                        }
+
+                                },
+				"FluentDReceived": {
+					"type": "date",
+					"format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd HH:mm:ss Z"
+				}
+			}
+		}
+	}
+}

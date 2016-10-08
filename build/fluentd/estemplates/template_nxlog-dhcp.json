@@ -6,7 +6,7 @@
 	"mappings": {
 		"_default_": {
 			"_all": {
-				"enabled": true
+				"enabled": false
 			},
 			"dynamic_templates" : [{
         	      		"message_field" : {
@@ -24,11 +24,10 @@
             		}]
 		},
 		"fluentd": {
+			"_all": {
+        			"enabled": true
+      			},
 			"properties": {
-				"@timestamp": {
-					"type": "date",
-					"format": "strict_date_optional_time||epoch_millis"
-				},
 				"Date": {
 					"type": "date",
 					"format": "MM/dd/yyyy"
@@ -41,7 +40,7 @@
                                         "type": "string",
                                         "index" : "analyzed"
                                 },
-				"IDdef": {
+				"IDDef": {
                                         "type": "string"
                                 },
 				"Message": {
@@ -55,7 +54,7 @@
 					"type": "date",
 					"format": "HH:mm:ss"
 				},
-				"syslog_server_received_time": {
+				"SyslogReceived": {
 					"type": "date",
 					"format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd HH:mm:ss Z"
 				}

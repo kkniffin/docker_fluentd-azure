@@ -24,11 +24,10 @@
             		}]
 		},
 		"fluentd": {
+			"_all": {
+        			"enabled": true
+      			},
 			"properties": {
-				"@timestamp": {
-					"type": "date",
-					"format": "strict_date_optional_time||epoch_millis"
-				},
 				"DateTime": {
 					"type": "date",
 					"format": "MM/dd/yyyy HH:mm:ss a"
@@ -39,17 +38,18 @@
 				},
 				"QuestionName": {
 					"type": "string",
+					"index": "not_analyzed",
 					"fields": {
-						"raw": {
+						"analyzed": {
 							"type": "string",
-							"index": "not_analyzed"
+							"index": "analyzed"
 						}
 					}
 				},
 				"RemoteIP": {
 					"type": "ip"
 				},
-				"syslog_server_received_time": {
+				"SyslogReceived": {
 					"type": "date",
 					"format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd HH:mm:ss Z"
 				}
