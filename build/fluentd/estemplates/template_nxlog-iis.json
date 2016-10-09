@@ -70,7 +70,8 @@
                                 },
 				"NXLogReceivedTime": {
                                         "type": "date",
-                                        "format" : "epoch_millis"
+                                        "format" : "epoch_millis",
+                                        "ignore_malformed" :  true
                                 },
                                 "NXLogHost": {
                                         "type": "string",
@@ -84,7 +85,8 @@
                                 },
 				"FluentDReceived": {
 					"type": "date",
-					"format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd HH:mm:ss Z"
+					"format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd HH:mm:ss Z",
+                                        "ignore_malformed" :  true
 				}
 			}
 		}

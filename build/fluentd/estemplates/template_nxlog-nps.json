@@ -1,5 +1,5 @@
 {
-	"template": "dhcp-*",
+	"template": "nps-*",
 	"settings": {
 		"index.refresh_interval": "60s"
 	},
@@ -30,7 +30,8 @@
 			"properties": {
 				"FluentDReceived": {
 					"type": "date",
-					"format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd HH:mm:ss Z"
+					"format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd HH:mm:ss Z",
+					"ignore_malformed" : true
 				},
 				"@timestamp" : {
             				"type" : "date",
@@ -40,13 +41,10 @@
                                         "type": "string",
                                         "index" : "analyzed"
                                 },
-				"EventDateTime" : {
-			            "format" : "MM-dd-yy HH:mm:ss z||MM-dd-yy HH:mm:ss Z",
-			            "type" : "date"
-				},
 				"NXLogReceivedTime": {
                                         "type": "date",
-                                        "format" : "epoch_millis"
+                                        "format" : "epoch_millis",
+					"ignore_malformed" : true
                                 },
                                 "NXLogHost": {
                                         "type": "string",
@@ -57,37 +55,19 @@
                                                 }
                                         }
                                 },
-                                "LogDate": {
-                                        "type": "string"
+				"EventDateTime" : {
+                                    	"format" : "MM-dd-yyyy HH:mm:ss.SSS z||MM-dd-yyyy HH:mm:ss.SSS z||MM-dd-yy HH:mm:ss z||MM-dd-yy HH:mm:ss Z",
+                                    	"type" : "date",
+				    	"ignore_malformed" :  true
                                 },
-                                "LogTime": {
-                                        "type": "string"
-                                },
-                                "IPAddress": {
+                                "Client-IP-Address": {
                                         "type": "ip"
                                 },
-                                "ReportedHostname": {
-                                        "type": "string",
-                                        "fields": {
-                                                "not_analyzed": {
-                                                        "type": "string",
-                                                        "index": "not_analyzed"
-                                                }
-                                        }
+                                "NAS-IP-Address": {
+                                        "type": "ip"
                                 },
-                                "IDDef": {
+                                "Computer-Name": {
                                         "type": "string",
-					"index": "analyzed",
-					"fields": {
-                                                "not_analyzed": {
-                                                        "type": "string",
-                                                        "index": "not_analyzed"
-                                                }
-                                        }
-                                },
-                                "QResultDef": {
-                                        "type": "string",
-                                        "index": "analyzed",
                                         "fields": {
                                                 "not_analyzed": {
                                                         "type": "string",
