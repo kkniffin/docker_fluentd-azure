@@ -75,6 +75,7 @@
                                 },
                                 "NXLogHost": {
                                         "type": "string",
+					"index": "analyzed",
 					"fields": {
                                                 "not_analyzed": {
                                                         "type": "string",
