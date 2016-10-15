@@ -21,7 +21,7 @@ RUN apk --no-cache --update add geoip-dev build-base ruby-dev grep sudo curl && 
      fluent-plugin-rewrite-tag-filter \
      fluent-plugin-forest \
 #     fluent-plugin-split \
-#     fluent-plugin-fields-autotype \
+     fluent-plugin-fields-autotype \
 #     fluent-plugin-grok-parser \
 #     fluent-plugin-xml-parser \
      fluent-plugin-rewrite \

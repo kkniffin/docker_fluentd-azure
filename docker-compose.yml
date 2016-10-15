@@ -44,8 +44,8 @@ services:
     environment:
       FLUENTD_CONF: "fluentd-syslog.conf"
       FLUENTD_OPT: "-vv"
-      ES_SERVER: ${ES_SERVER} # Server to connect to and load ES Templates
-      ES_SERVER2: ${ES_SERVER} # Secondary Server, set to same as Primary if you don't have one
+      ES_SERVER: ${ES_SERVER1} # Server to connect to and load ES Templates
+      ES_SERVER2: ${ES_SERVER2} # Secondary Server, set to same as Primary if you don't have one
       ES_USER: "elastic" # Username used to connect to ES to load Templates
       ES_PASSWORD: "changeme" # Password used to connect to ES to load Templates
     volumes:
@@ -72,8 +72,8 @@ services:
     environment:
       FLUENTD_CONF: "fluentd-docker.conf"
       FLUENTD_OPT: "-vv"
-      ES_SERVER: ${ES_SERVER} # Server to connect to and load ES Templates
-      ES_SERVER2: ${ES_SERVER} # Secondary Server, set to same as Primary if you don't have one
+      ES_SERVER: ${ES_SERVER1} # Server to connect to and load ES Templates
+      ES_SERVER2: ${ES_SERVER2} # Secondary Server, set to same as Primary if you don't have one
       ES_USER: "elastic" # Username used to connect to ES to load Templates
       ES_PASSWORD: "changeme" # Password used to connect to ES to load Templates
     volumes:
@@ -100,8 +100,8 @@ services:
     environment:
       FLUENTD_CONF: "fluentd-nxlog.conf"
       FLUENTD_OPT: "-vv"
-      ES_SERVER: ${ES_SERVER} # Server to connect to and load ES Templates
-      ES_SERVER2: ${ES_SERVER} # Secondary Server, set to same as Primary if you don't have one
+      ES_SERVER: ${ES_SERVER1} # Server to connect to and load ES Templates
+      ES_SERVER2: ${ES_SERVER2} # Secondary Server, set to same as Primary if you don't have one
       ES_USER: "elastic" # Username used to connect to ES to load Templates
       ES_PASSWORD: "changeme" # Password used to connect to ES to load Templates
     volumes:

@@ -1,0 +1,55 @@
+{
+	"template": "tacacs-*",
+	"settings": {
+		"index.refresh_interval": "60s"
+	},
+	"mappings": {
+		"_default_": {
+			"_all": {
+				"enabled": false
+			},
+			"dynamic_templates" : [{
+        	      		"message_field" : {
+                			"match" : "message",
+                			"match_mapping_type" : "string",
+                			"mapping" : { "type" : "string", "index" : "not_analyzed" }
+	              		}
+        	    	},
+			{
+              			"string_fields" : {
+                			"match" : "*",
+                			"match_mapping_type" : "string",
+	                		"mapping" : { "type" : "string", "index" : "not_analyzed" }
+        	      		}
+            		}]
+		},
+		"fluentd": {
+			"_all": {
+        			"enabled": true
+      			},
+			"properties": {
+				"@timestamp" : {
+            				"type" : "date",
+            				"format" : "strict_date_optional_time||epoch_millis"
+          			},
+                                "TacacsDeviceHost": {
+                                        "type": "ip"
+                                },
+				"TacacsUserIP": {
+					"type": "ip"
+				},
+                                "source_host": {
+                                        "type": "ip"
+                                },
+                                "start_time": {
+                                        "type": "long"
+                                },
+				"SyslogReceived": {
+					"type": "date",
+					"format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd HH:mm:ss Z",
+                                        "ignore_malformed" :  true
+				}
+			}
+		}
+	}
+}

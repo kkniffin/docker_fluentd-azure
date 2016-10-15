@@ -8,7 +8,8 @@ fi
 . ./overrides.env
 
 # Set Variables
-export ES_SERVER="${ES_SERVER:-1.1.1.1}"
+export ES_SERVER1="${ES_SERVER1:-1.1.1.1}"
+export ES_SERVER2="${ES_SERVER2:-1.1.1.1}"
 export FLUENTD_SERVER="${FLUENTD_SERVER:-1.1.1.1}"
 export DOCKER_DATA="${DOCKER_DATA:-/opt/docker_data}"
 docker-compose "$@"
