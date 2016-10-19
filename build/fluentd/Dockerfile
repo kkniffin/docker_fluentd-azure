@@ -13,6 +13,7 @@ RUN apk --no-cache --update add geoip-dev build-base ruby-dev grep sudo curl && 
     sudo -u fluent gem install  \
      fluent-plugin-elasticsearch \
      fluent-plugin-record-reformer \
+     fluent-plugin-secure-forward \
 #     fluent-plugin-beats \
 #     fluent-plugin-secure-forward \
      fluent-plugin-record-modifier \

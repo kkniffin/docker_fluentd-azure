@@ -11,3 +11,15 @@ Configuration files can go into build/fluentd/configs
 
 Some Configuration Files are already included
 
+# Create CA Certificate
+certtool --generate-privkey --bits 4096 --outfile nxlog-ca-key.pem
+certtool --generate-self-signed --load-privkey nxlog-ca-key.pem --outfile nxlog-ca.pem
+# Create Client Certificate & Sign it.
+certtool --generate-privkey --outfile nxlog-client-key.pem --bits 4096
+certtool --generate-request --load-privkey nxlog-ca-key.pem --outfile nxlog-client-request.pem
+certtool --generate-certificate --load-request nxlog-client-request.pem --outfile nxlog-client-cert.pem --load-ca-certificate nxlog-ca.pem --load-ca-privkey nxlog-ca-key.pem 
+rm -f nxlog-client-request.pem
+# Copy
+# nxlog-client-cert.pem
+# nxlog-client-key.pem
+# nxlog-ca-key.pem
