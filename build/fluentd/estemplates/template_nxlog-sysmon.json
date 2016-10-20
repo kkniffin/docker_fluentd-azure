@@ -1,0 +1,75 @@
+{
+	"template": "sysmon-*",
+	"settings": {
+		"index.refresh_interval": "60s"
+	},
+	"mappings": {
+		"_default_": {
+			"_all": {
+				"enabled": false
+			},
+			"dynamic_templates" : [{
+        	      		"message_field" : {
+                			"match" : "message",
+                			"match_mapping_type" : "string",
+                			"mapping" : { "type" : "string", "index" : "not_analyzed" }
+	              		}
+        	    	},
+			{
+              			"string_fields" : {
+                			"match" : "*",
+                			"match_mapping_type" : "string",
+	                		"mapping" : { "type" : "string", "index" : "not_analyzed" }
+        	      		}
+            		}]
+		},
+		"fluentd": {
+			"_all": {
+        			"enabled": true
+      			},
+			"properties": {
+				"FluentDReceived": {
+					"type": "date",
+					"format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd HH:mm:ss Z",
+					"ignore_malformed" : true
+				},
+				"@timestamp" : {
+            				"type" : "date",
+            				"format" : "strict_date_optional_time||epoch_millis"
+          			},
+                                "Message": {
+                                        "type": "string",
+                                        "index" : "analyzed"
+                                },
+				"NXLogReceivedTime": {
+                                        "type": "date",
+                                        "format" : "epoch_millis",
+					"ignore_malformed" : true
+                                },
+                                "NXLogHost": {
+                                        "type": "string",
+					"fields": {
+                                                "not_analyzed": {
+                                                        "type": "string",
+                                                        "index": "not_analyzed"
+                                                }
+                                        }
+                                },
+				"EventDateTime" : {
+                                    	"format" : "MM-dd-yyyy hh:mm:ss a z||MM-dd-yyyy HH:mm:ss.SSS z||MM-dd-yyyy HH:mm:ss.SSS z||MM-dd-yy HH:mm:ss z||MM-dd-yy HH:mm:ss Z",
+                                    	"type" : "date",
+				    	"ignore_malformed" :  true
+                                },
+                                "Hostname": {
+                                        "type": "string",
+                                        "fields": {
+                                                "not_analyzed": {
+                                                        "type": "string",
+                                                        "index": "not_analyzed"
+                                                }
+                                        }
+                                }
+			}
+		}
+	}
+}
