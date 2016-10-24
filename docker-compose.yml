@@ -1,33 +1,6 @@
 version: '2'
 services:
 
-  # FluentD Receiver Beats
-#  fluentd-beats:
-#    build: ./build/fluentd
-#    restart: always
-#    logging:
-#      driver: fluentd
-#      options:
-#        fluentd-address: "${FLUENTD_SERVER}:24224"
-#        tag: "docker.fluentd-beats"
-#        fluentd-async-connect: "true"
-#    ports:
-#      - 5044:5044
-#    environment:
-#      FLUENTD_CONF: "fluentd-beats.conf"
-#      FLUENTD_OPT: "-vv"
-#      ES_SERVER: ${ES_SERVER} # Server to connect to and load ES Templates
-#      ES_SERVER2: ${ES_SERVER} # Secondary Server, set to same as Primary if you don't have one
-#      ES_USER: "elastic" # Username used to connect to ES to load Templates
-#      ES_PASSWORD: "changeme" # Password used to connect to ES to load Templates
-#    volumes:
-#      #- ${DOCKER_DATA}/docker-azure-fluentd/fluentd-receiver/config:/fluentd/etc
-#      - ${DOCKER_DATA}/docker-azure-fluentd/fluentd-receiver/data:/data_log
-#    cap_add:
-#      - NET_BIND_SERVICE
-#    networks:
-#      - main
-
   # FluentD Receiver Syslog
   fluentd-syslog:
     build: ./build/fluentd
@@ -57,35 +30,35 @@ services:
     networks:
       - main
 
-  # FluentD Receiver Docker
-  fluentd-docker:
-    build: ./build/fluentd
-    restart: always
-    logging:
-      driver: fluentd
-      options:
-        fluentd-address: "${FLUENTD_SERVER}:24224"
-        tag: "docker.fluentd-docker"
-        fluentd-async-connect: "true"
-    ports:
-      - 24224:24224
-    environment:
-      FLUENTD_CONF: "fluentd-docker.conf"
-      FLUENTD_OPT: "-vv"
-      ES_SERVER: ${ES_SERVER1} # Server to connect to and load ES Templates
-      ES_SERVER2: ${ES_SERVER2} # Secondary Server, set to same as Primary if you don't have one
-      ES_USER: "elastic" # Username used to connect to ES to load Templates
-      ES_PASSWORD: "changeme" # Password used to connect to ES to load Templates
-    volumes:
-      #- ${DOCKER_DATA}/docker-azure-fluentd/fluentd-receiver/config:/fluentd/etc
-      - ${DOCKER_DATA}/docker-azure-fluentd/fluentd-receiver/data:/data_log
-      - ${DOCKER_DATA}/docker-azure-fluentd/fluentd_buffer/docker:/fluentd_buffer
-    cap_add:
-      - NET_BIND_SERVICE
-    networks:
-      - main
+#  # FluentD Receiver Docker
+#  fluentd-docker:
+#    build: ./build/fluentd
+#    restart: always
+#    logging:
+#      driver: fluentd
+#      options:
+#        fluentd-address: "${FLUENTD_SERVER}:24224"
+#        tag: "docker.fluentd-docker"
+#        fluentd-async-connect: "true"
+#    ports:
+#      - 24224:24224
+#    environment:
+#      FLUENTD_CONF: "fluentd-docker.conf"
+#      FLUENTD_OPT: "-vv"
+#      ES_SERVER: ${ES_SERVER1} # Server to connect to and load ES Templates
+#      ES_SERVER2: ${ES_SERVER2} # Secondary Server, set to same as Primary if you don't have one
+#      ES_USER: "elastic" # Username used to connect to ES to load Templates
+#      ES_PASSWORD: "changeme" # Password used to connect to ES to load Templates
+#    volumes:
+#      #- ${DOCKER_DATA}/docker-azure-fluentd/fluentd-receiver/config:/fluentd/etc
+#      - ${DOCKER_DATA}/docker-azure-fluentd/fluentd-receiver/data:/data_log
+#      - ${DOCKER_DATA}/docker-azure-fluentd/fluentd_buffer/docker:/fluentd_buffer
+#    cap_add:
+#      - NET_BIND_SERVICE
+#    networks:
+#      - main
 
-  # FluentD Receiver Beats
+  # FluentD Receiver Nxlog General
   fluentd-nxlog:
     build: ./build/fluentd
     restart: always
@@ -93,7 +66,7 @@ services:
       driver: fluentd
       options:
         fluentd-address: "${FLUENTD_SERVER}:24224"
-        tag: "docker.fluentd-nxlog"
+        tag: "docker.fluentd-nxlog-general"
         fluentd-async-connect: "true"
     ports:
       - 5140:5140
@@ -112,6 +85,35 @@ services:
       - NET_BIND_SERVICE
     networks:
       - main
+
+  # FluentD Receiver Nxlog ASSP
+  fluentd-nxlog-assp:
+    build: ./build/fluentd
+    restart: always
+    logging:
+      driver: fluentd
+      options:
+        fluentd-address: "${FLUENTD_SERVER}:24224"
+        tag: "docker.fluentd-nxlog-assp"
+        fluentd-async-connect: "true"
+    ports:
+      - 5141:5141
+    environment:
+      FLUENTD_CONF: "fluentd-nxlog-assp.conf"
+      FLUENTD_OPT: "-vv"
+      ES_SERVER: ${ES_SERVER1} # Server to connect to and load ES Templates
+      ES_SERVER2: ${ES_SERVER2} # Secondary Server, set to same as Primary if you don't have one
+      ES_USER: "elastic" # Username used to connect to ES to load Templates
+      ES_PASSWORD: "changeme" # Password used to connect to ES to load Templates
+    volumes:
+      #- ${DOCKER_DATA}/docker-azure-fluentd/fluentd-receiver/config:/fluentd/etc
+      - ${DOCKER_DATA}/docker-azure-fluentd/fluentd-receiver/data:/data_log
+      - ${DOCKER_DATA}/docker-azure-fluentd/fluentd_buffer/nxlog:/fluentd_buffer
+    cap_add:
+      - NET_BIND_SERVICE
+    networks:
+      - main
+
 
 networks:
   main:

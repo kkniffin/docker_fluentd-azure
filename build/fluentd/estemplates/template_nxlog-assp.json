@@ -1,5 +1,5 @@
 {
-	"template": "winevent-*",
+	"template": "assp-*",
 	"settings": {
 		"index.refresh_interval": "60s"
 	},
@@ -56,22 +56,15 @@
                                         }
                                 },
 				"EventDateTime" : {
-                                    	"format" : "MM-dd-yyyy hh:mm:ss a z||MM-dd-yyyy HH:mm:ss.SSS z||MM-dd-yyyy HH:mm:ss.SSS z||MM-dd-yy HH:mm:ss z||MM-dd-yy HH:mm:ss Z",
+                                    	"format" : "MMM-dd-yy HH:mm:ss Z||MM-dd-yyyy HH:mm:ss.SSS z||MM-dd-yyyy HH:mm:ss.SSS z||MM-dd-yy HH:mm:ss z||MM-dd-yy HH:mm:ss Z",
                                     	"type" : "date",
 				    	"ignore_malformed" :  true
                                 },
-                                "IpAddress": {
-                                        "type": "string",
-					"index": "not_analyzed"
+                                "SourceIPAddress": {
+                                        "type": "ip"
                                 },
-                                "Hostname": {
-                                        "type": "string",
-                                        "fields": {
-                                                "not_analyzed": {
-                                                        "type": "string",
-                                                        "index": "not_analyzed"
-                                                }
-                                        }
+                                "SourceIPAddressGeo_coordinates": {
+                                        "type": "geo_point"
                                 }
 			}
 		}

@@ -8,23 +8,22 @@ RUN mkdir /fluentd_buffer
 RUN chmod 777 /fluentd_buffer
 WORKDIR /home/fluent
 ENV PATH /home/fluent/.gem/ruby/2.3.0/bin:$PATH
+# Grab IP Database
+WORKDIR /data
+RUN wget http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz
+RUN gunzip GeoLiteCity.dat.gz
 # DISABLED fluent-plugin-flatten-hash
-RUN apk --no-cache --update add geoip-dev build-base ruby-dev grep sudo curl && \
+RUN apk --no-cache --update add build-base ruby-dev grep sudo curl geoip-dev && \
     sudo -u fluent gem install  \
      fluent-plugin-elasticsearch \
      fluent-plugin-record-reformer \
      fluent-plugin-secure-forward \
-#     fluent-plugin-beats \
-#     fluent-plugin-secure-forward \
+     fluent-plugin-geoip-filter \
      fluent-plugin-record-modifier \
      fluent-plugin-parser \
-#     fluent-plugin-concat \
      fluent-plugin-rewrite-tag-filter \
      fluent-plugin-forest \
-#     fluent-plugin-split \
      fluent-plugin-fields-autotype \
-#     fluent-plugin-grok-parser \
-#     fluent-plugin-xml-parser \
      fluent-plugin-rewrite \
      strptime \
      && rm -rf /home/fluent/.gem/ruby/2.3.0/cache/*.gem && sudo -u fluent gem sources -c && \
