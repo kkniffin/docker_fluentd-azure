@@ -1,4 +1,4 @@
-# Create 5 VM's and make note of their name
+# Create 5 Azure VM's based on ubuntu 16.10 and make note of their name
 
 apt-get update && apt-get -y upgrade && apt-get -y dist-upgrade
 echo "oracle-java8-installer shared/accepted-oracle-license-v1-1 select true" | debconf-set-selections
