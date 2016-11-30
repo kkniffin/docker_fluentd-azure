@@ -1,4 +1,4 @@
-# Create 5 VM's and make not of their name
+# Create 5 VM's and make note of their name
 
 apt-get update && apt-get -y upgrade && apt-get -y dist-upgrade
 echo "oracle-java8-installer shared/accepted-oracle-license-v1-1 select true" | debconf-set-selections
@@ -26,8 +26,8 @@ chown -R elasticsearch.elasticsearch /opt/es_logs/
 
 ## VM4 Cluster Master
 cat <<"EOT">> /etc/elasticsearch/elasticsearch.yml
-cluster.name: NET-MAIN-CLUSTER
-node.name: net-main-cluster-master1
+cluster.name: CLUSTER
+node.name: cluster-master1
 node.master: true
 node.data: false
 network.host: 0.0.0.0
@@ -39,8 +39,8 @@ EOT
 
 ## VM1 Cluster Node 1
 cat <<"EOT">> /etc/elasticsearch/elasticsearch.yml
-cluster.name: NET-MAIN-CLUSTER
-node.name: net-main-cluster-node1
+cluster.name: CLUSTER
+node.name: cluster-node1
 node.client: false
 node.data: true
 network.host: 0.0.0.0
@@ -52,8 +52,8 @@ EOT
 
 ## VM2 Cluster Node 2
 cat <<"EOT">> /etc/elasticsearch/elasticsearch.yml
-cluster.name: NET-MAIN-CLUSTER
-node.name: net-main-cluster-node2
+cluster.name: CLUSTER
+node.name: cluster-node2
 node.client: false
 node.data: true
 network.host: 0.0.0.0
@@ -65,8 +65,8 @@ EOT
 
 ## VM3 Cluster Node 3
 cat <<"EOT">> /etc/elasticsearch/elasticsearch.yml
-cluster.name: NET-MAIN-CLUSTER
-node.name: net-main-cluster-node3
+cluster.name: CLUSTER
+node.name: cluster-node3
 node.client: false
 node.data: true
 network.host: 0.0.0.0
@@ -78,8 +78,8 @@ EOT
 
 ## VM4 Cluster Client
 cat <<"EOT">> /etc/elasticsearch/elasticsearch.yml
-cluster.name: NET-MAIN-CLUSTER
-node.name: net-main-cluster-client1
+cluster.name: CLUSTER
+node.name: cluster-client1
 node.master:
 node.data: false
 network.host: 0.0.0.0
